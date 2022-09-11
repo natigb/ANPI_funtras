@@ -5,13 +5,26 @@ iterMax = 2500
 eps = 2.2204*(10**-16)
 
 def fact(n):
+    """
+    Toma un numero entero y retorna el factorial de ese numero
+    
+    :param n: numero entero
+    :return: factorial del numero
+    """
+    n= int(n)
     fact = 1
     for i in range(1,n+1):
         fact = fact * i
     return fact
   
-
+   
 def div_t(x):
+    """
+    calcula la inversa de un numero, es decir 1/x o x^-1
+    
+    :param x: numero
+    :return: inverso de x
+    """
     if x==0:
         return "err"
     if x>0:
@@ -40,28 +53,29 @@ def div_t_aux(x, x0):
             return xk1
         xk=xk1
     return xk1
-##print(div_t(-1.5648))    
-##print(div_t(0))
 
-"""
-print(div_t(0))
-print(div_t(0.15))
-print(div_t(fact(101)))
-print(div_t(fact(99)))
-"""
 def power_t(x,y):
+    """
+    calcula la potencia de un numero, es decir x^y
+    
+    :param x: numero
+    :param y: exponente
+    :return: numero elevado al exponente
+    """
     if y == round(y):
         if y >=0:
             return x**y
         else:
             return div_t(x**abs(y))
     return x**y
-    ##print("x^y not implemented")
-"""print(power_t(5,15)) 
-print(power_t(5,-3))
-print(power_t(5,6.2))"""
 
 def sin_t(x):
+    """
+    calcula el seno de un numero en radianes
+    
+    :param x: numero
+    :return: seno de x
+    """
     xk=x
     for n in range (1,iterMax):
         var = (2*n)+1
@@ -72,12 +86,15 @@ def sin_t(x):
             return xk1
     print("break no err")
     return xk1
-"""print(sin_t(19))
-print(sin_t(5.2))
-print(sin_t(1))
-print(sin_t(0))"""
+
 
 def sinh_t(x):
+    """
+    calcula el seno hiperbolico de un numero en radianes
+    
+    :param x: numero
+    :return: seno hiperbolico de x
+    """
     xk=x
     for n in range (1,iterMax):
         var = (2*n)+1
@@ -88,20 +105,36 @@ def sinh_t(x):
             return xk1
     print("break no err")
     return xk1
-"""print(sinh_t(19))
-print(sinh_t(5.2))
-print(sinh_t(1))
-print(sinh_t(0))"""
+
 
 def tanh_t(x):
+    """
+    calcula la tangente hiperbolica de un numero en radianes
+    
+    :param x: numero
+    :return: tangente hiperbolica de x
+    """
     print("tanh(x) not implemented")
     return "err"
 
 def root_t(x,y):
+    """
+    calcula la raiz de un numero 
+    
+    :param x: numero
+    :param y: indice
+    :return: raiz de x segun el indice y
+    """
     print("y/(x) not implemented")
     return "err"
 
 def atan_t(x):
+    """
+    calcula el arco tangente de un numero en radianes
+    
+    :param x: numero
+    :return: arco tangente de x
+    """
     if -1 <= x <= 1:
         return atan_t_aux(x)
     if x>1:
@@ -130,12 +163,14 @@ def atan_t_aux2(x, const):
     print("break no err")
     return const-xk1
     
-"""print(atan_t(50000))
-print(atan_t(0.9))
-print(atan_t(-0.9))
-print(atan_t(-2))"""
 
 def exp_t(x):
+    """
+    calcula la funcion exponencial de un numero con base e
+    
+    :param x: numero
+    :return: e elevado a x
+    """
     xk= 1
     for n in range (1,iterMax):
         xk1=xk+power_t(x,n)*div_t(fact(n))
@@ -146,12 +181,13 @@ def exp_t(x):
     
     return xk1
 
-"""
-print(exp_t(19))
-print(exp_t(0))
-print(exp_t(1))
-"""
 def cos_t(x):
+    """
+    calcula el coseno de un numero en radianes
+    
+    :param x: numero
+    :return: coseno de x
+    """
     xk=1
     for n in range (1,iterMax):
         var = 2*n
@@ -162,28 +198,36 @@ def cos_t(x):
             return xk1
     print("break no err")
     return xk1
-"""print(cos_t(19))
-print(cos_t(5.2))
-print(cos_t(1))
-print(cos_t(0))
-print(cos_t(38))"""
+
 
 def sec_t(x):
+    """
+    calcula el secante de un numero en radianes
+    
+    :param x: numero
+    :return: secante de x
+    """
     return div_t(cos_t(x))
-"""print(sec_t(30))
-print(sec_t(-30))
-print(sec_t(7.8))
-print(sec_t(0))"""
+
 
 def tan_t(x):
+    """
+    calcula la tangente de un numero en radianes
+    
+    :param x: numero
+    :return: tangente de x
+    """
     return sin_t(x)* div_t(cos_t(x))
-"""print(tan_t(30))
-print(tan_t(0.9))
-print(tan_t(-0.9))
-print(tan_t(-2))"""
+
 
 #no se puede con negativos
 def ln_t(x):
+    """
+    calcula el logaritmo natural de un numero en radianes
+    
+    :param x: numero
+    :return: logaritmo natural de x
+    """
     xk=1
     const = (2*(x-1)) * div_t(x+1)
     for n in range (1,iterMax):
@@ -195,20 +239,26 @@ def ln_t(x):
     print("break no err")
     return xk1 * const
 
-"""print(ln_t(2))
-print(ln_t(970))
-print(ln_t(1565464))"""
 
 #no funciona con negativos
 def log_t(x, y):
+    """
+    calcula el logaritmo de un numero
+    
+    :param x: argumento
+    :param y: base
+    :return: logaritmo base y de x
+    """
     return ln_t(x)* div_t(ln_t(y))
-"""print(log_t(7,454542))
-print(log_t(10,5))
-print(log_t(10.5656,5.2))
-print(log_t(1,0))#deberia dar error creo
-print(log_t(0,5.2))#deberia dar error creo"""
+
 
 def cosh_t(x):
+    """
+    calcula el coseno hiperbolico de un numero en radianes
+    
+    :param x: numero
+    :return: coseno hiperbolico de x
+    """
     xk=1
     for n in range (1,iterMax):
         var = 2*n
@@ -219,17 +269,25 @@ def cosh_t(x):
             return xk1
     print("break no err")
     return xk1
-"""print(cosh_t(19))
-print(cosh_t(5.2))
-print(cosh_t(1))
-print(cosh_t(0))
-print(cosh_t(50))"""
+
 
 def sqrt_t(x):
+    """
+    calcula la raiz cuadrada de un numero
+    
+    :param x: numero
+    :return: raiz cuadrada de x
+    """
     print("sqrt(x) not implemented")
     return "err"
 
 def asin_t(x):
+    """
+    calcula el arco seno de un numero en radianes
+    
+    :param x: numero
+    :return: arco seno de x
+    """
     if -1 <= x <= 1:
         return asin_t_aux(x)
     return "err"   
@@ -244,34 +302,36 @@ def asin_t_aux(x):
     print("break no err")
     return xk1
 
-"""print(asin_t(0))
-print(asin_t(0.22))
-print(asin_t(0.56))
-print(asin_t(-1))
-print(asin_t(2))"""
+
 
 def csc_t(x):
+    """
+    calcula el cosecante de un numero en radianes
+    
+    :param x: numero
+    :return: cosecante de x
+    """
     return div_t(sin_t(x))
-"""print(csc_t(0))
-print(csc_t(0.22))
-print(csc_t(0.56))
-print(csc_t(-1))
-print(csc_t(2))"""
+
 
 def cot_t(x):
+    """
+    calcula el cotangente de un numero en radianes
+    
+    :param x: numero
+    :return: cotangente de x
+    """
     return div_t(tan_t(x))
 
-"""print(cot_t(0))
-print(cot_t(0.22))
-print(cot_t(0.56))
-print(cot_t(-1))
-print(cot_t(2))"""
-
 def acos_t(x):
+    """
+    calcula el arco coseno de un numero en radianes
+    
+    :param x: numero
+    :return: arco coseno de x
+    """
     return pi*div_t(2) - asin_t(x)
 
-"""print(acos_t(0.56))
-print(acos_t(-0.56))"""
 
 """print(div_t(0.15))
 print(sin_t(5.2))
