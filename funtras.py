@@ -4,19 +4,27 @@ tol = 10**-8
 iterMax = 2500
 eps = 2.2204*(10**-16)
 
-def fact(n):
+def is_number(x):
+    if type(x) == int or type(x)==float:
+        return True
+    else:
+        return False
+
+def fact(x):
     """
     Toma un numero entero y retorna el factorial de ese numero
     
     :param n: numero entero
     :return: factorial del numero
     """
-    n= int(n)
+    if not is_number(x):
+        return "err"
+    x= int(x)
     fact = 1
-    for i in range(1,n+1):
+    for i in range(1,x+1):
         fact = fact * i
     return fact
-  
+
    
 def div_t(x):
     """
@@ -25,6 +33,8 @@ def div_t(x):
     :param x: numero
     :return: inverso de x
     """
+    if not is_number(x):
+        return "err"
     if x==0:
         return "err"
     if x>0:
@@ -54,6 +64,47 @@ def div_t_aux(x, x0):
         xk=xk1
     return xk1
 
+def exp_t(x):
+    """
+    calcula la funcion exponencial de un numero con base e
+    
+    :param x: numero
+    :return: e elevado a x
+    """
+    if not is_number(x):
+        return "err"
+    xk= 1
+    for n in range (1,iterMax):
+        xk1=xk+power_t(x,n)*div_t(fact(n))
+        error = abs(xk1-xk)
+        if error<tol:
+            return xk1
+        xk=xk1
+    
+    return xk1
+
+def ln_t(x):
+    """
+    calcula el logaritmo natural de un numero en radianes
+    
+    :param x: numero
+    :return: logaritmo natural de x
+    """
+    if not is_number(x):
+        return "err"
+    if x<=0:
+        return "err"
+    xk=1
+    const = (2*(x-1)) * div_t(x+1)
+    for n in range (1,iterMax):
+        xk1 = xk + ( div_t(2*n+1) * (power_t((x-1) * div_t(x+1), 2*n) ))
+        error = abs(xk1-xk)
+        xk=xk1
+        if error<tol:
+            return xk1 * const
+    print("break no err")
+    return xk1 * const
+
 def power_t(x,y):
     """
     calcula la potencia de un numero, es decir x^y
@@ -62,11 +113,17 @@ def power_t(x,y):
     :param y: exponente
     :return: numero elevado al exponente
     """
+    if not is_number(x):
+        return "err"
     if y == round(y):
         if y >=0:
             return x**y
         else:
             return div_t(x**abs(y))
+    if x>=0 and y>=0:
+        return exp_t(y*ln_t(x)) # no son enteros y son positivos
+    if x<0 and y>=0:
+        return -1* exp_t(y*ln_t(x))
     return x**y
 
 def sin_t(x):
@@ -76,6 +133,8 @@ def sin_t(x):
     :param x: numero
     :return: seno de x
     """
+    if not is_number(x):
+        return "err"
     xk=x
     for n in range (1,iterMax):
         var = (2*n)+1
@@ -95,10 +154,32 @@ def sinh_t(x):
     :param x: numero
     :return: seno hiperbolico de x
     """
+    if not is_number(x):
+        return "err"
     xk=x
     for n in range (1,iterMax):
         var = (2*n)+1
         xk1 = xk + (power_t(x,var) *div_t(fact(var))) 
+        error = abs(xk1-xk)
+        xk=xk1
+        if error<tol:
+            return xk1
+    print("break no err")
+    return xk1
+
+def cosh_t(x):
+    """
+    calcula el coseno hiperbolico de un numero en radianes
+    
+    :param x: numero
+    :return: coseno hiperbolico de x
+    """
+    if not is_number(x):
+        return "err"
+    xk=1
+    for n in range (1,iterMax):
+        var = 2*n
+        xk1 = xk + (power_t(x,var) *div_t(fact(var)))
         error = abs(xk1-xk)
         xk=xk1
         if error<tol:
@@ -114,8 +195,9 @@ def tanh_t(x):
     :param x: numero
     :return: tangente hiperbolica de x
     """
-    print("tanh(x) not implemented")
-    return "err"
+    if not is_number(x):
+        return "err"
+    return sinh_t(x)*div_t(cosh_t(x))
 
 def root_t(x,y):
     """
@@ -125,8 +207,30 @@ def root_t(x,y):
     :param y: indice
     :return: raiz de x segun el indice y
     """
-    print("y/(x) not implemented")
-    return "err"
+    if not is_number(x):
+        return "err"
+    if (y%2==0 and x<0):
+        return "err"
+    if y == round(y) and y>2 :
+        return root_t_aux(x,y)
+    else:
+        return power_t(x, div_t(y))
+def root_t_aux(x,y):
+    xk=x*div_t(2)
+    for n in range (1,iterMax):
+        xk1 = xk - (power_t(xk,y)-y)* div_t(y*power_t(xk, y-1))
+        error = abs(xk1-xk)
+        xk=xk1
+        if error<tol:
+            return xk1
+    print("break no err")
+    return xk1
+"""print(root_t(5,3))
+print(root_t(-2,4))
+print(root_t(5,0.3))
+print(root_t(0.5,7.1))
+print(root_t(5,-3))"""
+
 
 def atan_t(x):
     """
@@ -135,6 +239,8 @@ def atan_t(x):
     :param x: numero
     :return: arco tangente de x
     """
+    if not is_number(x):
+        return "err"
     if -1 <= x <= 1:
         return atan_t_aux(x)
     if x>1:
@@ -164,23 +270,6 @@ def atan_t_aux2(x, const):
     return const-xk1
     
 
-def exp_t(x):
-    """
-    calcula la funcion exponencial de un numero con base e
-    
-    :param x: numero
-    :return: e elevado a x
-    """
-    xk= 1
-    for n in range (1,iterMax):
-        xk1=xk+power_t(x,n)*div_t(fact(n))
-        error = abs(xk1-xk)
-        if error<tol:
-            return xk1
-        xk=xk1
-    
-    return xk1
-
 def cos_t(x):
     """
     calcula el coseno de un numero en radianes
@@ -188,6 +277,8 @@ def cos_t(x):
     :param x: numero
     :return: coseno de x
     """
+    if not is_number(x):
+        return "err"
     xk=1
     for n in range (1,iterMax):
         var = 2*n
@@ -207,6 +298,10 @@ def sec_t(x):
     :param x: numero
     :return: secante de x
     """
+    if not is_number(x):
+        return "err"
+    if cos_t(x) == 0:
+        return "err"
     return div_t(cos_t(x))
 
 
@@ -217,30 +312,13 @@ def tan_t(x):
     :param x: numero
     :return: tangente de x
     """
+    if not is_number(x):
+        return "err"
+    if cos_t(x) == 0:
+        return "err"
     return sin_t(x)* div_t(cos_t(x))
 
 
-#no se puede con negativos
-def ln_t(x):
-    """
-    calcula el logaritmo natural de un numero en radianes
-    
-    :param x: numero
-    :return: logaritmo natural de x
-    """
-    xk=1
-    const = (2*(x-1)) * div_t(x+1)
-    for n in range (1,iterMax):
-        xk1 = xk + ( div_t(2*n+1) * (power_t((x-1) * div_t(x+1), 2*n) ))
-        error = abs(xk1-xk)
-        xk=xk1
-        if error<tol:
-            return xk1 * const
-    print("break no err")
-    return xk1 * const
-
-
-#no funciona con negativos
 def log_t(x, y):
     """
     calcula el logaritmo de un numero
@@ -249,27 +327,11 @@ def log_t(x, y):
     :param y: base
     :return: logaritmo base y de x
     """
+    if not is_number(x):
+        return "err"
+    if x<=0 or y<=0:
+        return "err"
     return ln_t(x)* div_t(ln_t(y))
-
-
-def cosh_t(x):
-    """
-    calcula el coseno hiperbolico de un numero en radianes
-    
-    :param x: numero
-    :return: coseno hiperbolico de x
-    """
-    xk=1
-    for n in range (1,iterMax):
-        var = 2*n
-        xk1 = xk + (power_t(x,var) *div_t(fact(var)))
-        error = abs(xk1-xk)
-        xk=xk1
-        if error<tol:
-            return xk1
-    print("break no err")
-    return xk1
-
 
 def sqrt_t(x):
     """
@@ -278,8 +340,12 @@ def sqrt_t(x):
     :param x: numero
     :return: raiz cuadrada de x
     """
-    print("sqrt(x) not implemented")
-    return "err"
+    if not is_number(x):
+        return "err"
+    if x<0:
+        return "err"
+    
+    return root_t(x,2)
 
 def asin_t(x):
     """
@@ -288,6 +354,8 @@ def asin_t(x):
     :param x: numero
     :return: arco seno de x
     """
+    if not is_number(x):
+        return "err"
     if -1 <= x <= 1:
         return asin_t_aux(x)
     return "err"   
@@ -321,6 +389,10 @@ def cot_t(x):
     :param x: numero
     :return: cotangente de x
     """
+    if not is_number(x):
+        return "err"
+    if sin_t(x) == 0:
+        return "err"
     return div_t(tan_t(x))
 
 def acos_t(x):
@@ -330,15 +402,19 @@ def acos_t(x):
     :param x: numero
     :return: arco coseno de x
     """
+    if not is_number(x):
+        return "err"
+    if not(-1 <= x <= 1):
+        return "err"
     return pi*div_t(2) - asin_t(x)
 
-
-"""print(div_t(0.15))
+"""print("start test")
+print(div_t(0.15))
 print(sin_t(5.2))
 print(tan_t(0.9))
 print(log_t(10,5))
 print(sinh_t(5.2))
-print(tanh_t(5))#
+print(tanh_t(5))
 print(root_t(5,7))#
 print(atan_t(-0.9))
 print(sec_t(-0.9))
@@ -347,7 +423,7 @@ print(cos_t(1))
 print(ln_t(970))
 print(power_t(5,-3))
 print(cosh_t(1))
-print(sqrt_t(51))#
+print(sqrt_t(51))
 print(asin_t(0.56))
 print(csc_t(-1))
 print(cot_t(0.56))

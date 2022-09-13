@@ -1,4 +1,5 @@
-from tkinter import Radiobutton, Tk, Text, Button, Label, Entry, END, INSERT, StringVar, Toplevel
+from tkinter import Radiobutton, Tk, Text, Button, Label, Entry, END, INSERT, StringVar, Toplevel, LEFT
+from turtle import bgcolor
 import funtras
 
 class Interfaz:
@@ -175,19 +176,29 @@ class Interfaz:
 
     def help(self):
             
-        newWindow = Toplevel(self.ventana)
+        newWindow = Toplevel(self.ventana, bg="black")
         newWindow.title("HELP")
-    
-        newWindow.geometry("200x200")
         info = """
-                Aqui va la explicacion 
+                Esta es una calculadora que aplica funciones trascendentes utilizando el archivo funtras.py.
+                Para escribir las entradas puede:
+                - Utilizar los botones en la pantalla seleccionando la entrada x o y con el Radiobutton.
+                - Seleccionar las entradas con el cursor del mouse y escribir con el teclado.
+                Para obtener el resultado seleccione la operacion que quiere realizar. El resultado aparecera 
+                en la pantalla negra. 
+                Para eliminar las entradas y el resultado utilice el boton "Clear All"
+
+                Si no se escribe nada en la entrada se tomara como si fuera 0
+                Si la pantalla de resutltado muestra "err" significa que el valor seleccionado no esta en el 
+                dominio de la funcion
+
                 Calculadora creada por:
                     Natalia Gonzalez Bermudez
-                    Karina
-                    David
+                    Karina Martinez Guerrero
+                    David Pereira Jimenez
                 """
-        Label(newWindow,
-            text = info).pack()
+        info_l= Label(newWindow,
+                    text = info, foreground= "White", background="black", font=("Helvetica",15), justify=LEFT)
+        info_l.grid(row=0,column=0)
 
     def click(self,texto,escribir):
         if not escribir:
