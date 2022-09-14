@@ -208,7 +208,10 @@ class Interfaz:
             if texto == "HELP":
                 self.help()
             else:
-                self.operacion(texto)
+                try:
+                    self.operacion(texto)
+                except:
+                    self.mostrarEnPantalla("err")
         else:
             #self.input_x= self.input_x+str(texto)
             self.mostrarEnEntry(texto)
