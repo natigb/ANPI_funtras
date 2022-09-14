@@ -218,19 +218,13 @@ def root_t(x,y):
 def root_t_aux(x,y):
     xk=x*div_t(2)
     for n in range (1,iterMax):
-        xk1 = xk - (power_t(xk,y)-y)* div_t(y*power_t(xk, y-1))
+        xk1 = xk - (power_t(xk,y)-x)* div_t(y*power_t(xk, y-1))
         error = abs(xk1-xk)
         xk=xk1
         if error<tol:
             return xk1
     print("break no err")
     return xk1
-"""print(root_t(5,3))
-print(root_t(-2,4))
-print(root_t(5,0.3))
-print(root_t(0.5,7.1))
-print(root_t(5,-3))"""
-
 
 def atan_t(x):
     """
