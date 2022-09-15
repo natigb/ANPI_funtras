@@ -1,3 +1,4 @@
+# Función para probar la libreria funtras.
 import funtras as f
 
 a= f.sin_t(3*f.div_t(7)) + f.ln_t(2)

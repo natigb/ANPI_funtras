@@ -2,8 +2,15 @@ from tkinter import Radiobutton, Tk, Text, Button, Label, Entry, END, INSERT, St
 from turtle import bgcolor
 import funtras
 
+# Archivo para creación de la interfaz de la calculadora.
 class Interfaz:
     def __init__(self, ventana):
+        """
+        It creates a GUI with a bunch of buttons and a text box
+        
+        :param ventana: the window that the calculator will be in
+        :return: Nothing.
+        """
         self.selected_entry = StringVar()
         self.selected_entry.set("x")
         self.ventana=ventana
@@ -77,6 +84,18 @@ class Interfaz:
         return
     
     def createButton(self,valor,escribir=True,ancho=9,alto=1):
+        """
+        It creates a button with the text "valor" and the width and height of "ancho" and "alto"
+        respectively, and when it's clicked, it calls the function "click" with the parameters "valor"
+        and "escribir"
+        
+        :param valor: The text that will be displayed on the button
+        :param escribir: if True, the button will write the value on the screen, defaults to True
+        (optional)
+        :param ancho: width, defaults to 9 (optional)
+        :param alto: height, defaults to 1 (optional)
+        :return: A Button object.
+        """
         return Button(self.ventana, text=valor, width=ancho, height=alto, font=("Helvetica",15), command=lambda: self.click(valor,escribir))
 
     def toFloat(self, text):
@@ -87,6 +106,11 @@ class Interfaz:
         return float(text)
 
     def mostrarEnEntry(self,input):
+        """
+        It inserts the input into the entry that is selected.
+        
+        :param input: the input that the user wants to insert into the entry
+        """
         
         if input == "pi":
             input = funtras.pi
@@ -96,6 +120,13 @@ class Interfaz:
             self.entry_y.insert(self.entry_y.index(INSERT),input)
 
     def mostrarEnPantalla(self,input):
+        """
+        It deletes the text in the textbox, then inserts the input
+        
+        :param input: the text to be displayed
+        :return: The return value is the value of the last expression evaluated, or None if no
+        expression was evaluated.
+        """
         self.pantalla.configure(state="normal")
         self.pantalla.delete("1.0", END)
         self.pantalla.configure(state="disabled")
@@ -106,6 +137,9 @@ class Interfaz:
         return
 
     def clearAll(self):
+        """
+        It clears the entry boxes and the text box
+        """
         self.entry_x.delete(0, END)
         self.entry_y.delete(0, END)
         self.pantalla.configure(state="normal")
@@ -113,6 +147,13 @@ class Interfaz:
         self.pantalla.configure(state="disabled")
 
     def obtenerResultado(self,op,x,y):
+        """
+        It returns the result of the operation between x and y.
+        
+        :param op: the operation to be performed
+        :param x: the first number
+        :param y: the value of the second number
+        """
         result = 0
         if op == "senh(x)":
             return funtras.sinh_t(x)
